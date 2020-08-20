@@ -2,7 +2,7 @@
 # User-defined workflow which inherits the PS defined Base Workflow.
 
 base_workflow_template: "default@latest" # "default" by default or one of the workflow  templates from psMarketplace like packer_build_terrfaorm_deploy@v1.0
-iac_template: "aws_vpc@v1.0" # Possible values: empty (use no templating but tf code in user's repo), one of the IaC templates from psMarketplace like aws_vpc@v1.0
+iac_template: "tf-aws-vpc@v1.0" # Possible values: empty (use no templating but tf code in user's repo), one of the IaC templates from psMarketplace like aws_vpc@v1.0
 iac_compliance: 
   allow: 
     vpc_cidr: 
