@@ -3,16 +3,18 @@
 
 base_workflow_template: "default@latest" # "default" by default or one of the workflow  templates from psMarketplace like packer_build_terrfaorm_deploy@v1.0
 iac_template: "tf-aws-vpc@master" # Possible values: empty (use no templating but tf code in user's repo), one of the IaC templates from psMarketplace like aws_vpc@v1.0
-iac_compliance: 
-  allow: 
-    vpc_cidr: 
-      - 10.0.0.0/24
-      - 10.0.1.0/24
-  deny: 
-    vpc_cidr: 
-      - 10.0.2.0/24
-      - 10.0.3.0/24
-  warn: 
-    nat_gw: 
-      - 10.0.4.0/24
-      - 10.0.5.0/24
+iac_compliance:
+  run_base_line_comliance: true
+  user_defined:
+    allow: 
+      vpc_cidr: 
+        - 10.0.0.0/24
+        - 10.0.1.0/24
+    deny: 
+      vpc_cidr: 
+        - 10.0.2.0/24
+        - 10.0.3.0/24
+    warn: 
+      nat_gw: 
+        - 10.0.4.0/24
+        - 10.0.5.0/24
