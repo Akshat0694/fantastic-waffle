@@ -17,7 +17,7 @@ spec:
 
   compliance:
     baseline_checks: false # Run Baseline compliance (Service Provider and Community recommended) for the resources in the template, if any
-    inherit_policy: "waffle_corp_general" # Inherit global or parent policies
+    enforced_policy: "waffle_corp_global" # Inherit global or parent policies
     user_defined: # User defined compliance policies
       allow:
         aws_vpc.vpc_cidr:
@@ -34,6 +34,8 @@ spec:
         aws_vpc.vpc_cidr:
           - 10.0.2.0/24
           - 10.0.3.0/24
+        aws_vpc.change.actions:
+          - destroy
       warn:
         aws_route.*.destination_cidr_block:
           - 0.0.0.0/0
