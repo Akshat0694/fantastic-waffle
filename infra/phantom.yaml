@@ -1,20 +1,41 @@
 ---
-# User-defined workflow which inherits the PS defined Base Workflow.
+metadata:
+  name: "Sample Workflow"
+  labels:
+    app: "App-X"
+    owner: "Akshat Tandon"
 
-base_workflow_template: "default@latest" # "default" by default or one of the workflow  templates from psMarketplace like packer_build_terrfaorm_deploy@v1.0
-iac_template: "tf-aws-vpc@master" # Possible values: empty (use no templating but tf code in user's repo), one of the IaC templates from psMarketplace like aws_vpc@v1.0
-iac_compliance:
-  run_base_line_compliance: false
-  user_defined:
-    allow: 
-      vpc_cidr: 
-        - 10.0.0.0/24
-        - 10.0.1.0/24
-    deny: 
-      vpc_cidr: 
-        - 10.0.2.0/24
-        - 10.0.3.0/24
-    warn: 
-      nat_gw: 
-        - 10.0.4.0/24
-        - 10.0.5.0/24
+spec:
+  base_workflow_template: "default@latest" # "default" by default or one of the workflow  templates from psMarketplace like packer_build_terrfaorm_deploy@v1.0
+  iac_template: "tf-aws-vpc@master" # Possible values: empty (use no templating but tf code in user's repo), one of the IaC templates from psMarketplace like aws_vpc@v1.0
+  user_repo_path: "/infra"
+  user_repo_url: "https://github.com/Akshat0694/fantastic-waffle.git@master"
+
+  variables:
+    vpc_cidr: "10.0.0.0/24"
+    region: "eu-central-1"
+
+  compliance:
+    baseline_checks: false # Run Baseline compliance (Service Provider and Community recommended) for the resources in the template, if any
+    enforced_policy: "waffle_corp_global" # Inherit global or parent policies
+    user_defined: # User defined compliance policies
+      allow:
+        aws_vpc.vpc_cidr:
+          - 10.0.0.0/24
+          - 10.0.1.0/24
+        aws_vpc.tags:
+          - 
+            key: "Owner"
+            value: "Akshat Tandon" # Dynamic lookup from a data sources and regex
+          - 
+            key: "Name"
+            value: "fantastic-waffle.*" # Dynamic lookup from a data sources and regex
+      deny:
+        aws_vpc.vpc_cidr:
+          - 10.0.2.0/24
+          - 10.0.3.0/24
+        aws_vpc.change.actions:
+          - destroy
+      warn:
+        aws_route.*.destination_cidr_block:
+          - 0.0.0.0/0
